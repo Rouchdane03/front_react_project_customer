@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import UserProfile from "./UserProfile";
+import { useState, useEffect } from "react";
+
+
+const users = [
+        {
+          name: "Jamila",
+          age: 22,
+          gender: "female"
+        },
+        {
+          name: "Joe",
+          age: 21,
+          gender: "female"
+      },
+      {
+        name: "isaac",
+        age: 17,
+        gender: "male"
+    },
+    {
+      name: "phil",
+      age: 49,
+      gender: "male"
+  },
+  {
+    name: "foden",
+    age: 16,
+    gender: "female"
+  }
+];
+
+const UserProfiles = ({users})=>(
+  <div>
+         {users.map((user,index)=>(
+             <UserProfile
+            key={index}
+               name={user.name}
+               age={user.age}
+               gender={user.gender}
+               randomImageNumber={index}
+            />
+         ))}
+    </div>
+)
+;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [counter, setCounter] = useState(0);
+  const [isLoading, setIsLoading] = useState(false)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+  useEffect(()=>{
+    setIsLoading(true);
+    setTimeout(()=>{
+      setIsLoading(false)
+    },4000);
+      //alert("Hello");
+  }, []);
+
+  if(isLoading){
+    return "loading...";
+  }
+  
+  return(
+  <div>
+    <button 
+      onClick={()=>setCounter(previousCounter=>previousCounter + 1)}>
+      Increment counter
+      </button>
+    <h1>{counter}</h1>
+    <UserProfiles users={users}/> 
+  </div>
+) ;
 }
-
-export default App
+export default App;
