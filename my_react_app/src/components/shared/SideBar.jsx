@@ -86,7 +86,7 @@ const NavItem = ({ icon, children, ...rest }) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'blue.500',
           color: 'white',
         }}
         {...rest}>
@@ -152,7 +152,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2">
                   <Text fontSize="sm">Rouchdane MOUDJIBOU</Text>
-                  <Text fontSize="xs" color="gray.600">
+                  <Text fontSize="xs" color="blue.500">
                     Admin
                   </Text>
                 </VStack>

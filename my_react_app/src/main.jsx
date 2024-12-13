@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { ChakraProvider } from '@chakra-ui/react'
+import { createStandaloneToast } from '@chakra-ui/react'
+const { ToastContainer} = createStandaloneToast()
+
 createRoot(
   document
    .getElementById('root'))
@@ -10,6 +13,7 @@ createRoot(
         <StrictMode>
           <ChakraProvider>
              <App />
+             <ToastContainer />
           </ChakraProvider>
         </StrictMode>,
 )
