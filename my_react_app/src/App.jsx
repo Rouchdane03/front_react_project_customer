@@ -10,16 +10,16 @@ const App = ()=>{
 
     const [customers, setCustomers] = useState([]); //lui il renvoie un tableau de deux valeurs: une val initial à une variable et un callback qui retourne la nouvelle valeur ou modifié de la variable initial
     const [loading, setLoading] = useState(false);
-    const [erreur, setError] = useState("");
+    const [error, setError] = useState("");
 
     //declare
     const fetchCustomers = ()=>{
       setLoading(true);
      getCustomers().then(res=>{
-         setCustomers(res.data)
+         setCustomers(res.data);
      }).catch(err=>{
-      setError(err.response.data.message);
-      errorNotification(err.code, err.response.data.message);
+      setError(err?.message);
+      errorNotification(err?.code, err?.message);
     }
     ).finally(()=>{
       setLoading(false)
@@ -56,7 +56,7 @@ const App = ()=>{
             );
     }
 
-    if(erreur){
+    if(error){
       return (
         <SidebarWithHeader>
            <DrawerForm
@@ -66,16 +66,18 @@ const App = ()=>{
         </SidebarWithHeader>
         );
     }
-    
+
   return (
   <SidebarWithHeader>
     <DrawerForm
     fetchCustomers = {fetchCustomers}
     />
     <Wrap justify={"center"} spacing={"30px"}>
-        {customers.map((customer,index)=>(
+        {customers
+        .sort((c1,c2)=>c1.id-c2.id)
+        .map((customer,index)=>(
             <WrapItem key={index}>
-              <CardWithImage {...customer}/>
+              <CardWithImage {...customer} fetchCustomers = {fetchCustomers}/>
             </WrapItem> 
         ))}
      </Wrap>

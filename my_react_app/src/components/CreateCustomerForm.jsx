@@ -1,6 +1,6 @@
 import { Formik, Form, useField } from 'formik';
 import {Alert, AlertIcon, FormLabel, Input, Select, Box, Button, Stack} from "@chakra-ui/react";
-import { registerCustomer } from '../services/client';
+import { registerCustomer, updateCustomer } from '../services/client';
 import { successNotification, errorNotification } from '../services/notification';
 import * as Yup from 'yup';
 
@@ -41,19 +41,19 @@ const MySelect = ({ label, ...props }) => {
 };
 
 // And now we can use these
-const CreateCustomerForm = ({fetchCustomers}) => {
+const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
   return (
     <>
       <Formik
         initialValues={{
-          name: '',
-          email: '',
-          age: 0,
-          gender: ''
+          name: updateValue?updateValue.name:'',
+          email:updateValue?updateValue.email:'',
+          age: updateValue?updateValue.age:'',
+          gender: updateValue?updateValue.gender:''
         }}
         validationSchema={Yup.object({
           name: Yup.string()
-            .max(15, 'Must be 15 characters or less')
+            .max(40, 'Must be 40 characters or less')
             .required('Required'),
           email: Yup.string()
             .email('Invalid email address')
@@ -70,21 +70,38 @@ const CreateCustomerForm = ({fetchCustomers}) => {
             .required('Required'),
         })}
         onSubmit={(customer, {setSubmitting}) => {
-          setSubmitting(true)
-          registerCustomer(customer)
+          setSubmitting(true);
+          if(!updateValue){
+                  registerCustomer(customer)
                   .then(res=>{
-                     console.log(res);
-                     successNotification("Customer saved",`"${customer.name}" has sucessfully been added`);
-                     fetchCustomers();
+                    console.log(res);
+                    successNotification("Customer saved",`"${customer.name}" has been sucessfully added`);
+                    fetchCustomers();
                   })
                   .catch(err=>{
-                     console.log(err);
-                     errorNotification(err.code, err.response.data.message);
+                    console.log(err);
+                    errorNotification(err.code, err.response.data.message);
                   })
                   .finally(()=>{
                     setSubmitting(false);
-
                   });
+          }
+          else{
+            updateCustomer(customer,passTheId)
+                  .then(res=>{
+                    console.log(res);
+                    successNotification("Customer updated",`"${customer.name}" has been sucessfully  updated`);
+                    fetchCustomers();
+                  })
+                  .catch(err=>{
+                    console.log(err);
+                    errorNotification(err.code, err.response.data.message);
+                  })
+                  .finally(()=>{
+                    setSubmitting(false);
+                  });
+          }
+          
         }}
       >
         {({isValid, isSubmitting})=> (
@@ -94,21 +111,21 @@ const CreateCustomerForm = ({fetchCustomers}) => {
             label="Name"
             name="name"
             type="text"
-            placeholder="Jane"
+            //placeholder="Jane"
           />
 
          <MyTextInput
             label="Email Address"
             name="email"
             type="email"
-            placeholder="jane@formik.com"
+            //placeholder="jane@formik.com"
           />
 
           <MyTextInput
             label="Age"
             name="age"
             type="number"
-            placeholder="20"
+            //placeholder="20"
           />
          
           <MySelect label="Gender" name="gender">

@@ -8,13 +8,22 @@ import {
   Text,
   Stack,
   useColorModeValue,
-  Tag
+  Tag,
+  Wrap,
+  WrapItem
 } from '@chakra-ui/react'
+import DeleteCustomerDialog from './DeleteCustomerDialog';
+import UpdateCustomer from './UpdateCustomer';
 
-export default function CardWithImage({id, name, email, age, gender}) {
+export default function CardWithImage({id, name, email, age, gender,fetchCustomers}) {
 
-  const genderVal = gender=="MALE"? "men":"women";
-
+  const genderVal = gender==="MALE"? "men":"women";
+  const updateValue = {
+                        name: name,
+                        email:email,
+                        age:age,
+                        gender:gender
+                      };
   return (
     <Center py={6}>
       <Box
@@ -53,6 +62,14 @@ export default function CardWithImage({id, name, email, age, gender}) {
             </Heading>
             <Text color={'gray.500'}>{email}</Text>
             <Text color={'gray.500'}>Age {age} | {gender}</Text>
+            <Wrap justify={"center"} spacing={"10px"}>
+                <WrapItem>
+                     <DeleteCustomerDialog passTheId={id} customerName={name} fetchCustomers = {fetchCustomers}/>
+                </WrapItem> 
+                <WrapItem>
+                     <UpdateCustomer passTheId={id} fetchCustomers={fetchCustomers} updateValue={updateValue}/>
+                </WrapItem>    
+            </Wrap>
           </Stack>
         </Box>
       </Box>
