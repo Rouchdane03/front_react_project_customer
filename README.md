@@ -34,3 +34,9 @@ Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votr
 
 ```bash
 git clone https://github.com/Rouchdane03/front_react_project_customer.git
+
+### 2. Aller dans le répertoire du projet
+
+```bash
+cd front_react_project_customer
+
