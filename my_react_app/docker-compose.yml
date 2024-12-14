@@ -1,0 +1,64 @@
+services: 
+  my_db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: amigoscode
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  my_backend:
+    container_name: customer_backend
+    image: rouchdane/spring-boot-example:latest
+    environment:
+     SPRING_DATASOURCE_URL: "jdbc:postgresql://my_db:5432/customer"
+    ports:
+      - "8085:8081"
+    networks:
+      - postgres
+    depends_on:
+      - my_db
+    restart: unless-stopped
+
+  my_frontend:
+    container_name: customer_frontend
+    image: rouchdane/rouch-react-project-customer
+    build:
+      context: .
+    ports:
+      - "3000:5173"
+    depends_on:
+      - my_backend
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+    depends_on:
+      - my_db
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
