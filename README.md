@@ -4,7 +4,7 @@ http://dev-backend-api-env.eba-itsjmtsp.eu-west-3.elasticbeanstalk.com/
 
 ## Description
 
-Ce projet est une application web développée avec **React**(niveau front) et avec Java+Spring boot pour le back, conçue pour la gestion et l'interaction avec les clients. Elle permet aux utilisateurs de visualiser, ajouter, modifier et supprimer des informations relatives aux clients, tout en offrant une interface utilisateur moderne et intuitive. Par ailleurs, vous pouvez consulter le code source de mon back dans le repo
+Ce projet est une application web, développée avec **React**(niveau front) et avec Java+Spring boot(pour le back), conçue pour la gestion et l'interaction avec les clients d'une entreprise IT. Elle permet aux utilisateurs de visualiser, ajouter, modifier et supprimer des informations relatives aux clients, tout en offrant une interface utilisateur moderne et intuitive et reponsive. Par ailleurs, vous pouvez consulter aussi le code source de mon back dans le repo
 `spring-boot-project-customer`
 
 ## Fonctionnalités
