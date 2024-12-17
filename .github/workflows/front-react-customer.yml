@@ -53,6 +53,7 @@ jobs:
           sed -i -E "s|(rouchdane/rouch-react-project-customer:)[^\"}]+|\1${{steps.build-number.outputs.BUILD_NUMBER}}|" ../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat ../Dockerrun.aws.json
+
       - name: AWS Elastic Beanstalk Deploy the Updated Dockerrun.aws.json file
         uses: einaregilsson/beanstalk-deploy@v22
         with:
@@ -63,12 +64,14 @@ jobs:
           version_label: ${{steps.build-number.outputs.BUILD_NUMBER}}
           version_description: ${{github.SHA}}
           region: ${{ secrets.AWS_EB_REGION }}
-          deployment_package: ../Dockerrun.aws.json
+          deployment_package: Dockerrun.aws.json
+
       - name: Send deployment to AWS news with AWS Elastic Beanstalk to slack
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"le deploiement sur AWS du front et du back associé est terminé "}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Commit and push Dockerrun.aws.json to our github repo
         run: |
           git config user.name github actions
@@ -76,11 +79,13 @@ jobs:
           git add .
           git commit -m "Update Dockerrun.aws.json specifically our docker app image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}"
           git push
+
       - name: Send commit and push news to slack
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"le code avec la modif sur le fichier Dockerrun.aws.json a ete bien commit et push :git-push: sur main par le user github actions"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Send last message to slack
         if: always()
         run: >
