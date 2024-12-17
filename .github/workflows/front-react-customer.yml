@@ -43,7 +43,7 @@ jobs:
       - name: Send sucess image pushed message to slack
         run: >
           curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"the front app's image using ${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} args is is built and pushed to dockerhub registry"}' 
+          --data '{"text":"the front apps image using ${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} args is is built and pushed to dockerhub registry"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Update Dockerrun.aws.json with the newest application image tag which is build number
