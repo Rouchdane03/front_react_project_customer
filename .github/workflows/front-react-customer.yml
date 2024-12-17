@@ -49,7 +49,7 @@ jobs:
       - name: Update Dockerrun.aws.json with the newest application image tag which is build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
-          cat Dockerrun.aws.json
+          cat ../Dockerrun.aws.json
           sed -i -E "s|(rouchdane/rouch-react-project-customer:)[^\"}]+|\1${{steps.build-number.outputs.BUILD_NUMBER}}|" ../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat ../Dockerrun.aws.json
