@@ -21,24 +21,25 @@ jobs:
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":" :github: https://github.com/Rouchdane03/front_react_project_customer/commit/${{github.sha}} ${{github.event.head_commit.message}}"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
-     
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.1.0
             
+      - name: Set front image tag
+        id: build-number
+        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3.3.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set front image tag
-        id: build-number
-        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
-
-      - name: Building app's docker image and replacing image tag with build_number value and Push to dockerhub
+      - name: Docker Build and push front image
         run: |
-          docker build . -t rouchdane/rouch-react-project-customer:${{steps.build-number.outputs.BUILD_NUMBER}} --build-arg api_base_url=${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}}
-          docker push rouchdane/rouch-react-project-customer:${{steps.build-number.outputs.BUILD_NUMBER}} 
+          chmod +x ../.ci/build-publish.sh
+          USERNAME=rouchdane \
+          REPO=rouch-react-project-customer \
+          TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
+          ../.ci/build-publish.sh . \
+            --build-arg api_base_url=${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}}
 
       - name: Send sucess image pushed message to slack
         run: >
@@ -65,6 +66,7 @@ jobs:
           version_description: ${{github.SHA}}
           region: ${{ secrets.AWS_EB_REGION }}
           deployment_package: Dockerrun.aws.json
+          wait_for_environment_recovery: 60
 
       - name: Send deployment to AWS news with AWS Elastic Beanstalk to slack
         run: >
@@ -76,7 +78,7 @@ jobs:
         run: |
           git config user.name github actions
           git config user.email github actions@github.com
-          git add -A
+          git add ../Dockerrun.aws.json
           git commit -m "Update Dockerrun.aws.json specifically our docker app image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}"
           git push
 
