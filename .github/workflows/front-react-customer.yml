@@ -39,8 +39,8 @@ jobs:
           REPO=rouch-react-project-customer \
           TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
           ../.ci/build-publish.sh . \
-            --build-arg api_base_url=${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} \
-            --build-arg api_base_url=${{secrets.ARGS_VALUE_LOCAL_BACKEND_IMAGE}}
+            ${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} \
+            ${{secrets.ARGS_VALUE_LOCAL_BACKEND_IMAGE}}
 
       - name: Send sucess image pushed message to slack
         run: >
