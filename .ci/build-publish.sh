@@ -17,6 +17,6 @@ docker buildx build \
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
     -t "${USERNAME}/${REPO}:${TAG}_local" \
-    --buil-arg "api_base_url=${ARG_WITH_LOCAL_BACKEND_API_BASE_URL}" \
+    --build-arg "api_base_url=${ARG_WITH_LOCAL_BACKEND_API_BASE_URL}" \
     --push \
     "$1"
