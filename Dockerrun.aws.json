@@ -15,7 +15,7 @@
       },
       {
         "name": "spring-boot-example",
-        "image": "rouchdane/spring-boot-example:17.12.2024.22.51.48",
+        "image": "rouchdane/spring-boot-example:latest",
         "essential": true,
         "memory": 512,
         "portMappings": [
