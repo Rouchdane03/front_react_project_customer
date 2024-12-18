@@ -21,7 +21,7 @@
       },
       {
         "name": "rouch-react-project-customer",
-        "image": "rouchdane/rouch-react-project-customer:18.12.2024.16.31.55",
+        "image": "rouchdane/rouch-react-project-customer:18.12.2024.18.56.26",
         "essential": true,
         "memory": 256,
         "portMappings": [
