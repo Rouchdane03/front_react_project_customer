@@ -39,12 +39,13 @@ jobs:
           REPO=rouch-react-project-customer \
           TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
           ../.ci/build-publish.sh . \
-            --build-arg api_base_url=${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}}
+            --build-arg api_base_url=${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} \
+            --build-arg api_base_url=${{secrets.ARGS_VALUE_LOCAL_BACKEND_IMAGE}}
 
       - name: Send sucess image pushed message to slack
         run: >
           curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"the front apps image using ${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} args is is built and pushed to dockerhub registry"}' 
+          --data '{"text":"the front apps images using ${{secrets.ARGS_VALUE_AWS_BACKEND_IMAGE}} and ${{secrets.ARGS_VALUE_LOCAL_BACKEND_IMAGE}} args is built and pushed to dockerhub registry"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Update Dockerrun.aws.json with the newest application image tag which is build number

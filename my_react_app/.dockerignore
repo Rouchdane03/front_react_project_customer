@@ -3,3 +3,4 @@ Dockerfile
 .env
 .dockerignore
 .DS_Store
+docker-compose.yml
