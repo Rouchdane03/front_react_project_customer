@@ -20,7 +20,9 @@ Ce projet est une application web, développée avec **React**(niveau front) et 
   - Interface adaptée aux écrans de bureau et mobiles.
 
 ---
+## Architecture Technique
 
+![Architecture Technique](images/architecture_technique.png)
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
