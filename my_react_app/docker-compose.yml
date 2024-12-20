@@ -29,11 +29,7 @@ services:
 
   my_frontend:
     container_name: customer_frontend
-    image: rouchdane/rouch-react-project-customer
-    build:
-      context: .
-      args:
-        - api_base_url:"http://localhost:8085"
+    image: rouchdane/rouch-react-project-customer:18.12.2024.21.52.39_local
     ports:
       - "3000:5173"
     depends_on:
