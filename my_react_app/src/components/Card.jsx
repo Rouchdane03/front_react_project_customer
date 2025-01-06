@@ -15,13 +15,14 @@ import {
 import DeleteCustomerDialog from './DeleteCustomerDialog';
 import UpdateCustomer from './UpdateCustomer';
 
-export default function CardWithImage({id, name, email, age, gender,fetchCustomers}) {
+export default function CardWithImage({id, name, email, password, age, gender,fetchCustomers}) {
 
   const genderVal = gender==="MALE"? "men":"women";
   const updateValue = {
                         name: name,
                         email:email,
                         age:age,
+                        password:password,
                         gender:gender
                       };
   return (

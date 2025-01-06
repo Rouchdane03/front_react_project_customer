@@ -9,19 +9,21 @@ const MyTextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
-  const [field, meta] = useField(props);
-  return (
-    <Box>
-      <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
-      <Input className="text-input" {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <Alert className="error" status={"error"} mt={2}>
-          <AlertIcon/>
-          {meta.error}
-        </Alert>
-      ) : null}
-    </Box>
-  );
+  if(!props.isUpdating){
+    const [field, meta] = useField(props);
+    return (
+      <Box>
+        <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+        <Input className="text-input" {...field} {...props} />
+        {meta.touched && meta.error ? (
+          <Alert className="error" status={"error"} mt={2}>
+            <AlertIcon/>
+            {meta.error}
+          </Alert>
+        ) : null}
+      </Box>
+    );
+  }
 };
 
 const MySelect = ({ label, ...props }) => {
@@ -48,6 +50,7 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
         initialValues={{
           name: updateValue?updateValue.name:'',
           email:updateValue?updateValue.email:'',
+          password:'', //y'a pas de password dans le DTO(car c'est un ou des DTOs le get renvoie)
           age: updateValue?updateValue.age:'',
           gender: updateValue?updateValue.gender:''
         }}
@@ -57,6 +60,10 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
             .required('Required'),
           email: Yup.string()
             .email('Invalid email address')
+            .required('Required'),
+          password: Yup.string()
+            .min(1,'Must be at least 1 character')
+            .max(20, 'Must be 20 characters or less')
             .required('Required'),
           age: Yup.number()
             .min(16,'Must be at least 16 year Old')
@@ -120,7 +127,15 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
             type="email"
             //placeholder="jane@formik.com"
           />
-
+          
+          <MyTextInput
+            label="Password"
+            name="password"
+            type="password"
+            isUpdating={updateValue}
+            //placeholder="pwd" 
+          />
+           
           <MyTextInput
             label="Age"
             name="age"
