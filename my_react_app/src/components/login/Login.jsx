@@ -18,9 +18,10 @@ import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from "react-router";
 
 const Login = ()=>  {
-  
+
  const {logout} = useAuth();
  logout();
+ const navigate = useNavigate(); 
  /*
   const {user} = useAuth();
   const navigate = useNavigate();
@@ -43,7 +44,10 @@ const Login = ()=>  {
                 position: 'relative', 
                 bottom: '10px', }} 
           />
-          <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+          <Heading fontSize={'2xl'} margin={'0 auto'}>Welcome !</Heading>
+          <Button type="submit" colorScheme='blue' onClick={()=>{navigate("/new-customer")}}>Create new account</Button>
+          <hr />
+          <Text margin={'0 auto'}>Already have an account? Sign in</Text>
           <CreateLoginForm/>
         </Stack>
       </Flex>

@@ -1,19 +1,23 @@
 import { Formik, Form, useField } from 'formik';
-import {Alert, AlertIcon, FormLabel, Input, Select, Box, Button, Stack} from "@chakra-ui/react";
+import {Alert, AlertIcon, FormLabel, Input, Select, Box, Button, Stack,Text} from "@chakra-ui/react";
 import { registerCustomer, updateCustomer } from '../services/client';
 import { successNotification, errorNotification } from '../services/notification';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './context/AuthProvider';
+import { jwtDecode } from "jwt-decode";
 
 
-const MyTextInput = ({ label, ...props }) => {
+const MyTextInput = ({ label, children, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
-  if(!props.isUpdating){
     const [field, meta] = useField(props);
     return (
       <Box>
-        <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+        <FormLabel htmlFor={props.id || props.name}>{label}     
+          {children}
+        </FormLabel>
         <Input className="text-input" {...field} {...props} />
         {meta.touched && meta.error ? (
           <Alert className="error" status={"error"} mt={2}>
@@ -23,14 +27,15 @@ const MyTextInput = ({ label, ...props }) => {
         ) : null}
       </Box>
     );
-  }
 };
 
 const MySelect = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <Box>
-      <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+      <FormLabel htmlFor={props.id || props.name}>{label}
+      <Text as="span" color="red.500">*</Text> 
+      </FormLabel>
       <Select {...field} {...props} />
       {meta.touched && meta.error ? (
         <Alert className="error" status={"error"} mt={2}>
@@ -43,7 +48,9 @@ const MySelect = ({ label, ...props }) => {
 };
 
 // And now we can use these
-const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
+const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId,isNewAccount}) => {
+  const {setUser}  = useAuth();
+  const navigate = useNavigate();
   return (
     <>
       <Formik
@@ -78,7 +85,7 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
         })}
         onSubmit={(customer, {setSubmitting}) => {
           setSubmitting(true);
-          if(!updateValue){
+          if(!updateValue && !isNewAccount){
                   registerCustomer(customer)
                   .then(res=>{
                     console.log(res);
@@ -93,6 +100,32 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
                     setSubmitting(false);
                   });
           }
+          else if(isNewAccount){
+                  registerCustomer(customer)
+                  .then(res=>{
+                    console.log(res);
+                    //extract the token of the POST customer reponse
+                    const jwtToken = res.headers["authorization"];
+                    //save the token for fetchCustomersPurpose
+                    localStorage.setItem("access_token",jwtToken);
+                    //set le user actuel
+                    setUser({
+                                username : jwtDecode(jwtToken).sub,
+                                roles: jwtDecode(jwtToken).scopes,
+                                ...res.data.customerDTO
+                            });  
+                    navigate("/dashboard");
+                    successNotification("Customer saved",`"${customer.name}" has been sucessfully added`);
+                  })
+                  .catch(err=>{
+                    console.log(err);
+                    errorNotification(err.code, err.response.data.message);
+                  })
+                  .finally(()=>{
+                    setSubmitting(false);
+                  }); 
+
+          }
           else{
             updateCustomer(customer,passTheId)
                   .then(res=>{
@@ -102,7 +135,7 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
                   })
                   .catch(err=>{
                     console.log(err);
-                    errorNotification(err.code, err.response.data.message);
+                    errorNotification(err.code, err.response.data?.message);
                   })
                   .finally(()=>{
                     setSubmitting(false);
@@ -119,29 +152,40 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId}) => {
             name="name"
             type="text"
             //placeholder="Jane"
-          />
+            >
+              <Text as="span" color="red.500">*</Text>
+            </MyTextInput>
+         
 
          <MyTextInput
             label="Email Address"
             name="email"
             type="email"
             //placeholder="jane@formik.com"
-          />
+            >
+             <Text as="span" color="red.500">*</Text>
+            </MyTextInput>
+          
           
           <MyTextInput
             label="Password"
             name="password"
             type="password"
-            isUpdating={updateValue}
-            //placeholder="pwd" 
-          />
+            //placeholder="pwd"
+            >
+              <Text as="span" color="red.500">*</Text>
+              </MyTextInput> 
+          
            
           <MyTextInput
             label="Age"
             name="age"
             type="number"
             //placeholder="20"
-          />
+            >
+              <Text as="span" color="red.500">*</Text>
+            </MyTextInput>
+
          
           <MySelect label="Gender" name="gender">
             <option value="">Select gender</option>

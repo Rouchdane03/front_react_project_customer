@@ -13,7 +13,10 @@ const App = ()=>{
     const [customers, setCustomers] = useState([]); //lui il renvoie un tableau de deux valeurs: une val initial à une variable et un callback qui retourne la nouvelle valeur ou modifié de la variable initial
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    
+
+    const {user} = useAuth();
+    const navigate = useNavigate();
+
     //here c'est juste la declaration, il fait rien si on l'appelle pas.
     const fetchCustomers = ()=>{
       setLoading(true);

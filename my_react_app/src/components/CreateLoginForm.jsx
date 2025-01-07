@@ -87,7 +87,7 @@ const CreateLoginForm = ()=>{
                              placeholder="pwd" 
                           />
                 
-                          <Button type="submit" colorScheme='blue' isDisabled={!isValid || isSubmitting} >Submit</Button>
+                          <Button type="submit" colorScheme='blue' isDisabled={!isValid || isSubmitting} >Sign in</Button>
                           </Stack>
                         </Form>
                        )

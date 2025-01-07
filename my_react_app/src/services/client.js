@@ -17,6 +17,17 @@ export const getCustomers = async()=>{
        }
 }
 
+export const getCustomerById = async(idCustomer)=>{
+  try{
+      return await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/customer/${idCustomer}`,
+          getAuthConfig()
+           );
+    }catch(err){
+      throw err;
+       }
+}
+
 export const registerCustomer = async(aCustomer)=>{
     try{
         return await axios.post(

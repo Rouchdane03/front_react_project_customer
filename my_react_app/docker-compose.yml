@@ -29,7 +29,7 @@ services:
 
   my_frontend:
     container_name: customer_frontend
-    image: rouchdane/rouch-react-project-customer:20.12.2024.10.25.26_local
+    image: rouchdane/rouch-react-project-customer:06.01.2025.20.26.12_local
     ports:
       - "3000:5173"
     depends_on:

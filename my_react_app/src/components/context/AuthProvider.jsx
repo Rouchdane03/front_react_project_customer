@@ -4,7 +4,7 @@ import {
     useEffect,
     useState
 } from 'react'
-import { loginUser as performLogin} from '../../services/client';
+import { loginUser as performLogin, getCustomerById} from '../../services/client';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -28,6 +28,7 @@ const AuthProvider = ({children})=>{
 
    },[])
 
+   //déclaration function
    const login= async(userNameAndPassword)=>{
      
        return await new Promise((resolve, reject)=>{
@@ -41,10 +42,11 @@ const AuthProvider = ({children})=>{
                //decodons le token pour extraire le sub et le scopes
                 const tokenDecoded = jwtDecode(jwtToken);
 
-               //set the User
+               //set the User (quand connecté, on change automatiquement l'etat du composant AuthContext)
                setUser({
                 username : tokenDecoded.sub,
-                roles: tokenDecoded.scopes
+                roles: tokenDecoded.scopes,
+                ...res.data.customerDTO
             })
                resolve(res);
 
@@ -53,7 +55,11 @@ const AuthProvider = ({children})=>{
             })
        })
    };
-
+/*
+   const currentUserProfile = ()=>{
+      getCustomerById()
+   }
+*/
    const logout = ()=> {
        localStorage.removeItem("access_token");
        setUser(null);
@@ -73,9 +79,11 @@ const AuthProvider = ({children})=>{
     return true; //dans le cas où le token existe et il n'est pas expiré.
    }
 
+
    return (
         <AuthContext.Provider value={{   //le AuthProvider retourne le AuthContext(qui ici, représente le React context de mon appli)
             user,
+            setUser,
             login,
             logout,
             checkUserAuthenticated

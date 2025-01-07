@@ -170,7 +170,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
             <MenuList
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
-              <MenuItem>Profile</MenuItem>
+              <MenuItem 
+              onClick={()=>{
+                navigate("/dashboard");
+              }}
+              >Profile
+              </MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
@@ -190,7 +195,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 }
 
 const SidebarWithHeader = ({children}) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
