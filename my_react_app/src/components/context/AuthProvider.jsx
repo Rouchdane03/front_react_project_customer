@@ -7,9 +7,6 @@ import {
 import { loginUser as performLogin, getCustomerById} from '../../services/client';
 import { jwtDecode } from "jwt-decode";
 
-
-performLogin();
-
 const AuthContext = createContext({});
 
 const AuthProvider = ({children})=>{
@@ -55,11 +52,6 @@ const AuthProvider = ({children})=>{
             })
        })
    };
-/*
-   const currentUserProfile = ()=>{
-      getCustomerById()
-   }
-*/
    const logout = ()=> {
        localStorage.removeItem("access_token");
        setUser(null);

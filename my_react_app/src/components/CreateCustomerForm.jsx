@@ -110,10 +110,10 @@ const CreateCustomerForm = ({fetchCustomers,updateValue,passTheId,isNewAccount})
                     localStorage.setItem("access_token",jwtToken);
                     //set le user actuel
                     setUser({
-                                username : jwtDecode(jwtToken).sub,
-                                roles: jwtDecode(jwtToken).scopes,
-                                ...res.data.customerDTO
-                            });  
+                            username : jwtDecode(jwtToken).sub,
+                            roles: jwtDecode(jwtToken).scopes,
+                            ...res.data.customerDTO
+                            });
                     navigate("/dashboard");
                     successNotification("Customer saved",`"${customer.name}" has been sucessfully added`);
                   })

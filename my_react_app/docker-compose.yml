@@ -1,15 +1,15 @@
 services: 
   my_db:
-    container_name: postgres
+    container_name: postgres-for-react
     image: postgres
     environment:
-      POSTGRES_USER: amigoscode
+      POSTGRES_USER: rouchdane
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5332:5432"
+      - "5334:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -29,7 +29,7 @@ services:
 
   my_frontend:
     container_name: customer_frontend
-    image: rouchdane/rouch-react-project-customer:06.01.2025.20.26.12_local
+    image: rouchdane/rouch-react-project-customer:07.01.2025.16.34.31_local
     ports:
       - "3000:5173"
     depends_on:
