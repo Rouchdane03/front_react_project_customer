@@ -22,11 +22,11 @@ Ce projet est une application web, développée avec **React**(niveau front) et 
 ---
 ## Stack Technique V1
 
-![Architecture Technique](images/architecture_technique.png)
+![Stack V1](images/stackV1.png)
 
 ## Stack Technique V2
 
-![Architecture Technique](images/architecture_technique.png)
+![Stack V2](images/stackV2.png)
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
